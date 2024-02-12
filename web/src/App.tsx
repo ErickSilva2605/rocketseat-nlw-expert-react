@@ -14,14 +14,13 @@ export function App() {
           className="w-full bg-transparent text-3xl font-semibold tracking-tight outline-none placeholder:text-state-500"
         />
       </form>
+
       <div className='h-px bg-slate-700' />
 
       <div className='grid grid-cols-3 gap-6 auto-rows-[250px]'>
         <NewNoteCard />
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
-        <NoteCard />
+        <NoteCard note={{ date: new Date(), content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque exercitationem accusamus tempora, perferendis id ducimus molestias debitis laudantium possimus enim iure iusto voluptas. Cupiditate similique laborum maxime obcaecati, tenetur ullam.' }} />
+        <NoteCard note={{ date: new Date(), content: 'Lorem ipsum dolor' }} />
       </div>
     </div>
   )
