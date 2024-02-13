@@ -1,8 +1,37 @@
+import { useState } from 'react'
 import logo from './assets/logo-nlw-expert.svg'
 import { NewNoteCard } from './components/new-note-card'
 import { NoteCard } from './components/note-card'
 
+interface Note {
+  id: string
+  date: Date
+  content: string
+}
+
 export function App() {
+  const [notes, setNotes] = useState<Note[]>(() => {
+    const notesOnStorage = localStorage.getItem('notes')
+
+    if (notesOnStorage) {
+      return JSON.parse(notesOnStorage)
+    }
+    return []
+  })
+
+  function onNoteCreated(content: string) {
+    const newNote = {
+      id: crypto.randomUUID(),
+      content: content,
+      date: new Date()
+    }
+
+    const notesArray = [newNote, ...notes]
+
+    setNotes(notesArray)
+    localStorage.setItem('notes', JSON.stringify(notesArray))
+  }
+
   return (
     <div className='mx-auto max-w-6xl py-12 space-y-6'>
       <img src={logo} alt="Nlw Expert" />
@@ -18,9 +47,12 @@ export function App() {
       <div className='h-px bg-slate-700' />
 
       <div className='grid grid-cols-3 gap-6 auto-rows-[250px]'>
-        <NewNoteCard />
-        <NoteCard note={{ date: new Date(), content: 'Lorem ipsum dolor sit amet consectetur adipisicing elit. Eaque exercitationem accusamus tempora, perferendis id ducimus molestias debitis laudantium possimus enim iure iusto voluptas. Cupiditate similique laborum maxime obcaecati, tenetur ullam.' }} />
-        <NoteCard note={{ date: new Date(), content: 'Lorem ipsum dolor' }} />
+        <NewNoteCard onNoteCreated={onNoteCreated} />
+
+        {notes.map(note => {
+          return <NoteCard key={note.id} note={note} />
+        })}
+
       </div>
     </div>
   )
